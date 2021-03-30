@@ -2,9 +2,6 @@ service: s3-presign
 frameworkVersion: '2'
 useDotenv: true
 
-custom:
-  bucket: ''
-
 provider:
   name: aws
   runtime: nodejs12.x
@@ -16,8 +13,6 @@ functions:
     handler: handler.hello
   presign:
     handler: handler.presign
-    environment:
-      BUCKET: ${self::custom.bucket}
     events:
       - http:
           method: get
