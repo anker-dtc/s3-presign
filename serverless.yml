@@ -1,0 +1,32 @@
+service: s3-presign
+frameworkVersion: '2'
+useDotenv: true
+
+custom:
+  bucket: ''
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+  stage: dev
+
+functions:
+  hello:
+    handler: handler.hello
+  presign:
+    handler: handler.presign
+    environment:
+      BUCKET: ${self::custom.bucket}
+    events:
+      - http:
+          method: get
+          path: /api/s3_presign_url
+          request:
+            template:
+                application/json: >
+                    {
+                        "bucket": "$input.params('bucket')"
+                        "acl": "$input.params('acl')"
+                        "content_type": "$input.params('content_type')"
+                    }
