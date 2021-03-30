@@ -3,10 +3,10 @@ const aws = require('aws-sdk');
 const crypto = require("crypto");
 require('dotenv').config()
 
-module.exports.presign = async (event, context) => {
+module.exports.s3_presign = async (event, context) => {
     var s3 = new aws.S3({
-        accessKeyId: process.env.ACCESS_KEY_ID,
-        sercretAccessKey: process.env.SECRET_ACCESS_KEY,
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        sercretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
         region: 'us-west-2'
     });
 
@@ -19,7 +19,7 @@ module.exports.presign = async (event, context) => {
         ACL: event.acl,
         ContentType: event.content_type,
         Expires: signedUrlExpireSeconds
-    })
+    });
     return {
         statusCode: 200,
         body: JSON.stringify(
@@ -29,21 +29,4 @@ module.exports.presign = async (event, context) => {
             }
         )
     }
-}
-
-module.exports.hello = async event => {
-    return {
-        statusCode: 200,
-        body: JSON.stringify(
-            {
-                message: 'Go Serverless v1.0! Your function executed successfully!',
-                input: event,
-            },
-            null,
-            2
-        ),
-    };
-
-    // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-    // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
 };

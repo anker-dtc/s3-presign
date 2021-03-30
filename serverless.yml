@@ -9,10 +9,8 @@ provider:
   stage: dev
 
 functions:
-  hello:
-    handler: handler.hello
-  presign:
-    handler: handler.presign
+  s3_presign:
+    handler: handler.s3_presign
     events:
       - http:
           method: get
